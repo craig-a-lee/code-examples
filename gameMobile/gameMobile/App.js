@@ -2,11 +2,11 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, TextInput, Button } from 'react-native';
 // import react navigation container
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, validatePathConfig } from '@react-navigation/native';
 // import navigation stack constructor
 import  { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Questions from './Questions';
-
+import addPlayer from './modules/storage';
 //import questions
 import questionsList from './assets/questions.json';
 
@@ -18,12 +18,18 @@ function HomeScreen( { navigation }) {
 
   // start button event handler
   // navigate to the questions screen
-  function handleStart(e){
+  async function handleStart(e){
     console.log(player);
+    let score = 0;
+    try {
+      score = await addPlayer(player);
+    } catch (error) {
+      console.log(error);
+    }
     navigation.navigate('Questions', {
       questionslist: questionsList,
       player: player,
-      points:0,
+      points:score,
     });
   }
   

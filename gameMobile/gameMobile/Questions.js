@@ -1,5 +1,6 @@
 import { React, useState, useRef } from 'react';
 import { StyleSheet, View, Text, Button, Image } from 'react-native';
+import { updateScore } from './modules/storage';
 
 // image style
 const styles = StyleSheet.create({
@@ -25,10 +26,11 @@ function Questions({ route, navigation }){   //questionslist, player
    
 
 // test correctness move to te next question
-    function handleSubmit(e){
+    async function handleSubmit(e){
         if(answer.current === question.correct){
             console.log('1');
-            score.current = score.current +1;
+            score.current = score.current + 1;
+            await updateScore(player, String(score.current));
         }
         setCounter(counter +1);
         //navigate to the next question
